@@ -79,5 +79,3 @@ def features(palabra):
 	return (vocalTonica(silabas, tonica), sigTonica(silabas, tonica), 
 			antTonica(silabas, tonica), vocalesPostonicas(silabas, tonica), 
 			tieneDiptongo(palabra))
-
-print(features("carnicería"))
