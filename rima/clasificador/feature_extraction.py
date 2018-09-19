@@ -1,10 +1,31 @@
-from freeling import Freeling
+import re
 
-# Load dataset as string
-with open('../dataset/text.txt', 'r') as file:
-	text = file.read()
+from silabeo import Silabeo
 
-analyzer = Freeling(language="es")
-result = analyzer.run(text)
+_DIPTONGOS = {'ai', 'au', 'ei', 'eu', 'ia', 'ie', 'io', 'iu', 'oi', 'ou', 'ua',
+		 	  'ue', 'ui', 'uo'}
 
-print(result[0][0].decode('utf8'))
+_NSOVOCAL = {'a', 'e', 'i', 'o', 'u', 'n', 's'}
+
+_ACENTUADAS = {'á', 'é', 'í', 'ó', 'ú'}
+
+def tieneDiptongo(palabra):
+	return any([d for d in _DIPTONGOS if d in palabra])
+
+def esAguda(silabas):
+	return ((silabas[-1][-1] in _NSOVOCAL and any(a for a in _ACENTUADAS if a in silabas[-1])) or 
+		(not any(a for a in _ACENTUADAS if a in silabas[-2]) and not silabas[-1][-1] in _NSOVOCAL))
+
+def acentuacion(palabra):
+	s = Silabeo()
+	silabas = s.parse(palabra)
+
+	for i in range(len(silabas)):
+		if any(a for a in _ACENTUADAS if a in silabas[i]):
+			return i, silabas[i]
+
+		if i >= len(silabas) - 1:
+			if esAguda(silabas):
+				return len(silabas) - 1, silabas[-1]
+			else:
+				return len(silabas) - 2, silabas[-2]
