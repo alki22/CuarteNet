@@ -32,6 +32,8 @@ def process_sonnet(filename):
             except KeyError:
                 import ipdb; ipdb.set_trace()
             palabra = verso[-1].translate(table)
+            if '»' in palabra:
+            	palabra = palabra.split('»')[0]
 
             if 0 < i < 3:
                 rimasB.append(palabra)
@@ -59,14 +61,12 @@ def process_sonnet(filename):
 def main(argv):
     output_directory = '.'
     
-    '''
-    Code to process a file with a bunch of sonnets
+    # Code to process a file with a bunch of sonnets
 
     filenames = []
     with open('files1', 'r') as myfile:
         for line in myfile:
             filenames.append(line.replace('\n', ''))
-    '''
     dataset = []
 
     for fn in tqdm(filenames):
