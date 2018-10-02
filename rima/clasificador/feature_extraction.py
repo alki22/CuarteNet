@@ -16,11 +16,11 @@ _NSOVOCAL = {'a', 'e', 'i', 'o', 'u', 'n', 's'}
 _ACENTUADAS = {'á', 'é', 'í', 'ó', 'ú'}
 
 def tieneDiptongo(palabra):
-	"""Devuelve si la palabra es aguda,
-	   dado que no es esdrújula o sobreesdrújula"""
 	return any([d for d in _DIPTONGOS if d in palabra])
 
 def esAguda(silabas):
+	"""Devuelve si la palabra es aguda,
+	   dado que no es esdrújula o sobreesdrújula"""
 	if len(silabas) == 1:
 		return True
 
