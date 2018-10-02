@@ -16,11 +16,11 @@ _NSOVOCAL = {'a', 'e', 'i', 'o', 'u', 'n', 's'}
 _ACENTUADAS = {'á', 'é', 'í', 'ó', 'ú'}
 
 
-def tieneDiptongo(palabra):
+def tieneDiptongo(palabra: str):
     return any([d for d in _DIPTONGOS if d in palabra])
 
 
-def esAguda(silabas):
+def esAguda(silabas: list) -> bool:
     """Devuelve si la palabra es aguda,
        dado que no es esdrújula o sobreesdrújula"""
     if len(silabas) == 1:
@@ -36,7 +36,7 @@ def esAguda(silabas):
             (not tieneAcentoGrave and not tieneAcentoAgudo))
 
 
-def silabaTonica(silabas):
+def silabaTonica(silabas: list) -> str:
 
     for i in range(len(silabas)):
         if any([a for a in _ACENTUADAS if a in silabas[i]]):
@@ -49,7 +49,7 @@ def silabaTonica(silabas):
                 return len(silabas) - 2
 
 
-def vocalTonica(silabas, tonica):
+def vocalTonica(silabas: list, tonica: str) -> str:
     silabaTonica = silabas[tonica]
     vocalAbierta = [a for a in _ABIERTAS if a in silabaTonica]
     vocalCerrada = [c for c in _CERRADAS if c in silabaTonica]
@@ -60,7 +60,7 @@ def vocalTonica(silabas, tonica):
         return vocalCerrada[0]
 
 
-def sigTonica(silabas, tonica):
+def sigTonica(silabas: list, tonica: int) -> str:
     vocTonica = vocalTonica(silabas, tonica)
     posicion = silabas[tonica].index(vocTonica)
 
@@ -73,7 +73,7 @@ def sigTonica(silabas, tonica):
             return ""
 
 
-def antTonica(silabas, tonica):
+def antTonica(silabas: list, tonica: int) -> str:
     vocTonica = vocalTonica(silabas, tonica)
     posicion = silabas[tonica].index(vocTonica)
 
@@ -86,14 +86,14 @@ def antTonica(silabas, tonica):
             return ""
 
 
-def vocalesPostonicas(silabas, tonica):
+def vocalesPostonicas(silabas: list, tonica: int) -> str:
     indexTonica = silabas[tonica].index(vocalTonica(silabas, tonica))
     postonicas = "".join(silabas[tonica:][indexTonica:])
 
     return "".join([v for v in _VOCALES if v in postonicas])
 
 
-def features(palabra):
+def features(palabra: str) -> list:
     silabas = separar(palabra)
     tonica = silabaTonica(silabas)
 
@@ -104,7 +104,7 @@ def features(palabra):
     return features
 
 
-def diccDeFeatures(texto):
+def diccDeFeatures(texto: str) -> list:
     with open(texto, 'rb') as archivo:
         dataset = pickle.load(archivo)
 
@@ -138,4 +138,4 @@ def diccDeFeatures(texto):
 
     return corpus
 
-# print(diccDeFeatures("../dataset/dataset.pk"))
+#print(diccDeFeatures("../dataset/dataset.pk"))
