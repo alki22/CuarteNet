@@ -26,11 +26,10 @@ def esAguda(silabas: list) -> bool:
     if len(silabas) == 1:
         return True
 
-    terminaNSVocal = silabas[-1][-1] in _NSOVOCAL
     tieneAcentoAgudo = any([a for a in _ACENTUADAS if a in silabas[-1]])
-
-    if len(silabas) >= 2:
-        tieneAcentoGrave = any([a for a in _ACENTUADAS if a in silabas[-2]])
+    tieneAcentoGrave = any([a for a in _ACENTUADAS if a in silabas[-2]])
+    
+    terminaNSVocal = silabas[-1][-1] in _NSOVOCAL
 
     return ((terminaNSVocal and tieneAcentoAgudo) or
             (not tieneAcentoGrave and not tieneAcentoAgudo))
