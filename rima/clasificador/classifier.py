@@ -2,7 +2,6 @@ import feature_extraction
 
 from freeling import Freeling
 
-
 with open('../dataset/text.txt', 'r') as file:
 	text = file.read()
 
