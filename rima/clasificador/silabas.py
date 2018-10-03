@@ -58,6 +58,19 @@ def silabas(palabra):
             silabas.append(silaba)
             #print silabas, silaba, letra, salto, "--"
             #time.sleep(2)
+            for i in range(len(silabas)):
+                noVocales = True
+                
+                for c in silabas[i]:
+                    if vocal(c):
+                        noVocales = False
+                        break
+
+                if noVocales:
+                    if silaba == 0:
+                        silabas[i] = silabas[i] + silabas.pop(i + 1)
+                    else:
+                        silabas[i - 1] = silabas[i - 1] + silabas.pop(i) 
         except IndexError:
             break
 

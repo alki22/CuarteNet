@@ -28,14 +28,14 @@ def esAguda(silabas: list) -> bool:
 
     tieneAcentoAgudo = any([a for a in _ACENTUADAS if a in silabas[-1]])
     tieneAcentoGrave = any([a for a in _ACENTUADAS if a in silabas[-2]])
-    
+
     terminaNSVocal = silabas[-1][-1] in _NSOVOCAL
 
     return ((terminaNSVocal and tieneAcentoAgudo) or
             (not tieneAcentoGrave and not tieneAcentoAgudo))
 
 
-def silabaTonica(silabas: list) -> str:
+def silabaTonica(silabas: list) -> int:
 
     for i in range(len(silabas)):
         if any([a for a in _ACENTUADAS if a in silabas[i]]):
@@ -48,18 +48,28 @@ def silabaTonica(silabas: list) -> str:
                 return len(silabas) - 2
 
 
-def vocalTonica(silabas: list, tonica: str) -> str:
+def vocalTonica(silabas: list, tonica: int) -> str:
+    if len(silabas) == 0:
+        return ""
+
     silabaTonica = silabas[tonica]
     vocalAbierta = [a for a in _ABIERTAS if a in silabaTonica]
     vocalCerrada = [c for c in _CERRADAS if c in silabaTonica]
-    print(silabas)
+
     if any(vocalAbierta):
         return vocalAbierta[0]
-    else:
+
+    elif any(vocalCerrada):
         return vocalCerrada[0]
+
+    else:
+        return vocalTonica(silabas, tonica - 1)
 
 
 def sigTonica(silabas: list, tonica: int) -> str:
+    if len(silabas) == 0:
+        return ""
+
     vocTonica = vocalTonica(silabas, tonica)
     posicion = silabas[tonica].index(vocTonica)
 
@@ -73,6 +83,9 @@ def sigTonica(silabas: list, tonica: int) -> str:
 
 
 def antTonica(silabas: list, tonica: int) -> str:
+    if len(silabas) == 0:
+        return ""
+
     vocTonica = vocalTonica(silabas, tonica)
     posicion = silabas[tonica].index(vocTonica)
 
@@ -86,6 +99,9 @@ def antTonica(silabas: list, tonica: int) -> str:
 
 
 def vocalesPostonicas(silabas: list, tonica: int) -> str:
+    if len(silabas) == 0:
+        return ""
+
     indexTonica = silabas[tonica].index(vocalTonica(silabas, tonica))
     postonicas = "".join(silabas[tonica:][indexTonica:])
 
@@ -136,5 +152,3 @@ def diccDeFeatures(texto: str) -> list:
         corpus.append(featuresTripla)
 
     return corpus
-
-#print(diccDeFeatures("../dataset/dataset.pk"))
