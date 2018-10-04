@@ -36,7 +36,8 @@ def esAguda(silabas: list) -> bool:
 
 
 def silabaTonica(silabas: list) -> int:
-
+    """ Dada una lista de sílabas,
+        devuelve el índice de la sílaba tónica """
     for i in range(len(silabas)):
         if any([a for a in _ACENTUADAS if a in silabas[i]]):
             return i
@@ -120,7 +121,7 @@ def features(palabra: str) -> list:
 
 
 def diccDeFeatures(primeraPalabra: str, segundaPalabra: str) -> dict:
-    """ Devuelve el diccionario de features correspondiente al par 
+    """ Devuelve el diccionario de features correspondiente al par
         de terminaciones de estrofa """
     featuresPrimera = features(primeraPalabra)
     featuresSegunda = features(segundaPalabra)
