@@ -1,5 +1,3 @@
-![logo](https://www.photobox.co.uk/my/photo?album_id=5430144338&photo_id=501118824545)
-
 # Instrucciones para extraer features
 
 ```python
