@@ -16,13 +16,13 @@ _NSOVOCAL = {'a', 'e', 'i', 'o', 'u', 'n', 's'}
 _ACENTUADAS = {'á', 'é', 'í', 'ó', 'ú'}
 
 
-def tieneDiptongo(palabra: str):
+def tieneDiptongo(palabra: str) -> bool:
     return any([d for d in _DIPTONGOS if d in palabra])
 
 
 def esAguda(silabas: list) -> bool:
-    """Devuelve si la palabra es aguda,
-       dado que no es esdrújula o sobreesdrújula"""
+    """ Devuelve si la palabra es aguda,
+        considera sólo el caso en que no es esdrújula o sobreesdrújula """
     if len(silabas) == 1:
         return True
 
@@ -119,36 +119,43 @@ def features(palabra: str) -> list:
     return features
 
 
-def diccDeFeatures(texto: str) -> list:
-    with open(texto, 'rb') as archivo:
+def diccDeFeatures(primeraPalabra: str, segundaPalabra: str) -> dict:
+    """ Devuelve el diccionario de features correspondiente al par 
+        de terminaciones de estrofa """
+    featuresPrimera = features(primeraPalabra)
+    featuresSegunda = features(segundaPalabra)
+
+    featuresPar = {
+                        # Features de la primera palabra de la 3-upla
+                        'termPrimera': primeraPalabra,
+                        'vocalTonicaPrimera': featuresPrimera[0],
+                        'sigTonicaPrimera': featuresPrimera[1],
+                        'antTonicaPrimera': featuresPrimera[2],
+                        'postonicasPrimera': featuresPrimera[3],
+                        'diptongoPrimera': featuresPrimera[4],
+
+                        # Features de la segunda palabra de la 3-upla
+                        'termSegunda': segundaPalabra,
+                        'vocalTonicaSegunda': featuresSegunda[0],
+                        'sigTonicaSegunda': featuresSegunda[1],
+                        'antTonicaSegunda': featuresSegunda[2],
+                        'postonicasSegunda': featuresSegunda[3],
+                        'diptongoSegunda': featuresSegunda[4],
+                  }
+    return featuresPar
+
+
+def dataDeEntrenamiento(path: str) -> (list, list):
+    """ Devuelve una lista de diccionarios de features de cada par del corpus
+        y un vector [cant_elementos] con la etiqueta 1 si riman y 0 si no """
+    with open(path, 'rb') as archivo:
         dataset = pickle.load(archivo)
 
     corpus = []
+    etiquetas = []
 
     for tripla in dataset:
-        featuresPrimera = features(tripla[0])
-        featuresSegunda = features(tripla[1])
+        corpus.append(diccDeFeatures(tripla[0], tripla[1]))
+        etiquetas.append(tripla[2])
 
-        featuresTripla = {
-                            # Features de la primera palabra de la 3-upla
-                            'termPrimera': tripla[0],
-                            'vocalTonicaPrimera': featuresPrimera[0],
-                            'sigTonicaPrimera': featuresPrimera[1],
-                            'antTonicaPrimera': featuresPrimera[2],
-                            'postonicasPrimera': featuresPrimera[3],
-                            'diptongoPrimera': featuresPrimera[4],
-
-                            # Features de la segunda palabra de la 3-upla
-                            'termSegunda': tripla[1],
-                            'vocalTonicaSegunda': featuresSegunda[0],
-                            'sigTonicaSegunda': featuresSegunda[1],
-                            'antTonicaSegunda': featuresSegunda[2],
-                            'postonicasSegunda': featuresSegunda[3],
-                            'diptongoSegunda': featuresSegunda[4],
-
-                            # ¿Riman las dos palabras?
-                            'riman': tripla[2]
-                          }
-        corpus.append(featuresTripla)
-
-    return corpus
+    return corpus, etiquetas
