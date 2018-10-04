@@ -36,7 +36,7 @@ def esAguda(silabas: list) -> bool:
 
 
 def silabaTonica(silabas: list) -> int:
-    """ Dada una lista de sílabas,
+    """ Dada una lista de sílabas de una palabra
         devuelve el índice de la sílaba tónica """
     for i in range(len(silabas)):
         if any([a for a in _ACENTUADAS if a in silabas[i]]):
@@ -144,7 +144,6 @@ def diccDeFeatures(primeraPalabra: str, segundaPalabra: str) -> dict:
                         'diptongoSegunda': featuresSegunda[4],
                   }
     return featuresPar
-
 
 def dataDeEntrenamiento(path: str) -> (list, list):
     """ Devuelve una lista de diccionarios de features de cada par del corpus
