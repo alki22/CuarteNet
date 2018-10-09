@@ -1,0 +1,12 @@
+===== Training =====
+Accuracy: 0.5649848045923899
+[[31790     0]
+ [24477     0]]
+              precision    recall  f1-score   support
+
+           0       0.56      1.00      0.72     31790
+           1       0.00      0.00      0.00     24477
+
+   micro avg       0.56      0.56      0.56     56267
+   macro avg       0.28      0.50      0.36     56267
+weighted avg       0.32      0.56      0.41     56267

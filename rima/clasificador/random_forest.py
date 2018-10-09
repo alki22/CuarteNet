@@ -1,6 +1,7 @@
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from feature_extraction import *
+from sklearn.metrics import classification_report
 
 import pickle
 import os.path
@@ -47,3 +48,5 @@ for i in range(len(valor)):
 precision = precision/len(resultados)
 
 print(precision)
+
+print(classification_report(resultados, valor))

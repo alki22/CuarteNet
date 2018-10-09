@@ -2,21 +2,21 @@ import feature_extraction
 from sklearn.svm import SVC
 from random import sample
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.model_selection import train_test_split
 
-clf = SVC(gamma='auto')
 X, y = feature_extraction.dataDeEntrenamiento('../dataset/dataset.pk')
-v = DictVectorizer(sparse=False)
+v = DictVectorizer(sparse=True)
 X = v.fit_transform(X)
-length = len(X)
-total = set([i for i in range(0, length)])
-rand_ints = sample(range(0, length), int(length*0.8))
-tune_idx = list(total - set(rand_ints))
-x_train = [X[i] for i in rand_ints]
-y_train = [y[i] for i in rand_ints]
-x_tune = [X[i] for i in tune_idx]
-y_tune = [y[i] for i in tune_idx]
+length = X.shape[0]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
 
+print('===== Training =====')
+clf = SVC(kernel='rbf')
+clf.fit(X_train, y_train)
 
-clf.fit(x_train, y_train)
+print('Accuracy:', clf.score(X_test, y_test))
+y_pred = clf.predict(X_test)
 
-print(clf.score(x_tune, y_tune))
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
